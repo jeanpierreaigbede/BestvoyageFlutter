@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "127739328579",
+    "project_id": "bestvoyage-97276",
+    "storage_bucket": "bestvoyage-97276.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127739328579:android:0a1b0d2ac6b9f06cd0bcf6",
+        "android_client_info": {
+          "package_name": "com.example.bestvoyage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127739328579-0ae6d2idi1kht2mim2uflcus92j8qpso.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bestvoyage",
+            "certificate_hash": "e8f8250041494bc1adaeeb04efba711b234ffda2"
+          }
+        },
+        {
+          "client_id": "127739328579-7km4qt8bpm4jicnlkjpaht1bki6f2iuj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhQ4KECe3PeYCF2jIwzWVny_0bTeHuuOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127739328579-7km4qt8bpm4jicnlkjpaht1bki6f2iuj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
