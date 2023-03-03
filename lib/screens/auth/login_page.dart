@@ -171,19 +171,33 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   SizedBox(height: Dimensions.height20,),
                                   // connexionButton
-                                  InkWell(
-                                      onTap: (){
+
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        // text color
+                                        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15), // padding
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), // border radius
+                                        textStyle: TextStyle(fontSize: 18), // text style
+                                        elevation: 5,
+                                      ),
+                                      onPressed: ()async{
+
                                         if(formKey.currentState!.validate()){
                                           setState(() {
                                             isLoading = true;
                                           });
-                                          authController.signInWithEmailAndPassword(emailController.text, passwordController.text);
+                                          await authController.signInWithEmailAndPassword(emailController.text, passwordController.text);
                                           setState(() {
                                             isLoading = false;
                                           });
                                         }
-                                      },
-                                      child: AppButton(child: isLoading?const Center(child: CircularProgressIndicator(),):BigText(text: "Connectez-vous",))),
+
+                                  }, child: isLoading?const Center(child: CircularProgressIndicator(color: Colors.white,),):BigText(text: "Connectez-vous",color: Colors.white,)),
+
+
+
+
+
                                   SizedBox(height: Dimensions.height10,),
                                   TextButton(onPressed: (){
                                     Get.to(()=>RegisterPage(),transition: Transition.rightToLeft);
@@ -191,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                   TextButton(onPressed: (){
 
-                                  }, child: BigText(text: "Mot de passe oublié?",color: AppColors.buttonColor,isCenter: true,size: Dimensions.fontText15*0.8,))
+                                  }, child: BigText(text: "Mot de passe oublié?",color: Colors.purple,isCenter: true,size: Dimensions.fontText15*0.8,))
                                 ],
                               )
                           )

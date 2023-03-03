@@ -1,3 +1,6 @@
+import 'package:bestvoyage/screens/auth/login_page.dart';
+import 'package:bestvoyage/screens/home/homePage.dart';
+import 'package:bestvoyage/screens/others/agence.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bestvoyage/controllers/ligneController.dart';
 import 'package:bestvoyage/screens/home/treserverApp.dart';
@@ -28,10 +31,6 @@ class _LignePageState extends State<LignePage> {
 
   bool isLoading = false;
 
-  void getLines()async{
-
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,119 @@ class _LignePageState extends State<LignePage> {
         backgroundColor: AppColors.appBarBacmkground,
         title: SmallText(text: "Lignes de voyages ",color: Colors.white,size: Dimensions.fontText15*0.9,),
         actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.search,color: Colors.white,)),
+          IconButton(onPressed: ()async{
+            final key = GlobalKey<FormState>();
+            showDialog(context: context,
+                builder: (BuildContext context){
+              bool confirm = false;
+             var  lines = lineController.lines;
+             String? choix;
+              List<String> departs = [];
+              List<String> arrives = [];
+              List<Ligne> lignes = [];
+              for(var line in lines){
+                departs.add(line.depart!);
+              }
+              return Dialog(
+                child: Container(
+                  color: Colors.white,
+                  height: Dimensions.screenHeight*0.6,
+                  width: Dimensions.screenwidth*0.8,
+                  child: Column(
+                    children: [
+                      Form(
+                        key: key,
+                        child: Container(
+                          height: Dimensions.height45*1.3,
+                          width: Dimensions.screenwidth*0.6,
+                          child: DropdownButtonFormField(
+                            value: choix,
+                            hint: SmallText(text: "Choisissez le lieu de départ",size: Dimensions.fontText15*0.7,isCenter: true,),
+                            decoration: const InputDecoration(
+                                border: InputBorder.none
+                            ),
+                            items: departs.map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e))).toList(),
+                            onChanged: (value){
+                              print(value);
+                              setState(() {
+                                choix = value;
+                              });
+                            },
+                            validator: (value) {
+                              return value == null || value == "" ? "Ce champs est obligatoire" : null;
+                            },
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(onPressed: ()async{
+                        if(key.currentState!.validate()){
+                          setState(() {
+                            confirm = true;
+                          });
+                          for(var i in lines){
+                            if(choix == i.depart){
+                              arrives.add(i.arrive!);
+                              lignes.add(i);
+                            }
+                          }
+                        }
+                      }, child: SmallText(text: "Confirmer le lieu de depart",)),
+                      Expanded(
+                        child:  Visibility(
+                          visible: confirm,
+                          child: ListView.builder(
+                              itemCount: arrives.length,
+                              itemBuilder: (context,index){
+
+                                return InkWell(
+                                  onTap: (){
+                                    Get.to(()=>ReserverApp(depart: lignes[index].depart, arrivee:  lignes[index].arrive,prix: lignes[index].prix!,),transition: Transition.rightToLeft,);
+                                  },
+                                  child: Container(
+                                    height: Dimensions.height100,
+                                    width: Dimensions.screenwidth*0.8,
+                                    padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10,vertical: Dimensions.height5),
+                                    margin: EdgeInsets.symmetric(horizontal: Dimensions.widtht10,vertical: Dimensions.height5),
+                                    decoration: BoxDecoration(
+                                        color: Colors.purple.withOpacity(0.3)
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        BigText(text: "${lignes[index].depart} ---|--- ${lignes[index].arrive}"),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SmallText(text: "Prix: ${lignes[index].prix} f"),
+                                            SmallText(text: "Durée :2h")
+                                          ],
+                                        ),
+                                        Container(
+                                          alignment: Alignment.center,
+                                          height: Dimensions.height45*0.7,
+                                          width: Dimensions.screenwidth*0.8,
+                                          decoration: BoxDecoration(
+                                              color: Colors.purple,
+                                              borderRadius: BorderRadius.circular(20)
+                                          ),
+                                          child: SmallText(text: "Réserver maintemaint",color: Colors.white,),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+                });
+          }, icon: const Icon(Icons.search,color: Colors.white,)),
         ],
       ),
       body: Container(
@@ -141,20 +252,13 @@ class _LignePageState extends State<LignePage> {
               Divider(height: 20,color: Colors.black,),
               TextButton(onPressed: (){
 
-              }, child: SmallText(text: "Reserver un ticket",isCenter: false,)),
-              Divider(height: 20,color: Colors.black,),
-              TextButton(onPressed: (){
-
               }, child: SmallText(text: "Vos tickets",isCenter: false,)),
               Divider(height: 20,color: Colors.black,),
               TextButton(onPressed: (){
-
+                Get.to(()=>AgencePage(),transition: Transition.rightToLeft);
               }, child: SmallText(text: "Nos Agences",isCenter: false,)),
               Divider(height: 20,color: Colors.black,),
-              TextButton(onPressed: (){
 
-              }, child: SmallText(text: "Profil",isCenter: false,)),
-              Divider(height: 20,color: Colors.black,),
               TextButton(onPressed: ()async {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setBool(Constants.IS_CONNECTED, false);
@@ -163,6 +267,7 @@ class _LignePageState extends State<LignePage> {
                 prefs.setString(Constants.USER_UID, "");
                 FirebaseAuth auth = FirebaseAuth.instance;
                  await auth.signOut();
+                 Get.offAll(()=>LoginPage(),transition: Transition.rightToLeft);
               }, child: SmallText(text: "Déconnexion",isCenter: false,)),
               Divider(height: 20,color: Colors.black,),
             ],

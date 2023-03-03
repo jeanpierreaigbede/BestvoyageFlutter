@@ -12,4 +12,5 @@ class Constants{
   static const FIRST_NAME = "firstName";
   static const USER_UID = "uid";
   static const EMAIL = "email";
+  static const TICKET = "Ticket";
 }

@@ -311,11 +311,19 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     child: isLoading ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3,)) : BigText(text:"Se connecter",size: 20,),
                                   ),),*/
-                              ElevatedButton(onPressed: ()async{
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                // text color
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // padding
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), // border radius
+                                  textStyle: TextStyle(fontSize: 18), // text style
+                                  elevation: 5,
+                                ),
+                                onPressed: ()async{
+
                                 setState(() {
                                   isLoading = true;
                                 });
-                                print(telephoneController.text);
                                 if(formKey.currentState!.validate()){
                                   print("Im here");
                                   print(isValitedPhoneNumber);
@@ -324,7 +332,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 setState(() {
                                   isLoading = false;
                                 });
-                              }, child: isLoading ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3,)) : BigText(text:"Se connecter",size: 20,),),
+
+                              }, child: isLoading ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3,)) : BigText(text:"Se connecter",size: 20,color: Colors.white,),),
                               SizedBox(height: Dimensions.height5,),
                               TextButton(onPressed: (){
                                 Get.to(()=>LoginPage(),transition: Transition.rightToLeft);

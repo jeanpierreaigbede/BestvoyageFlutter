@@ -91,11 +91,6 @@ class AuthController extends GetxController{
 
   Future<String?> signInWithEmailAndPassword(String email,String password) async{
     try {
-      Get.snackbar(
-          "Connexion", "Loading...",
-          showProgressIndicator: true,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(minutes: 1));
 
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);

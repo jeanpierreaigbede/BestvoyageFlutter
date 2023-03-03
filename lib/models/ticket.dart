@@ -5,7 +5,7 @@ class Ticket {
   String? depart, arrivee, firstname, lastname;
   int? nombre_de_place;
   String? info, preference;
-  String? date, heure, id_user, createAt, transactionId;
+  String? date, heure, id_user, createAt, transactionId, image;
 
   Ticket({
     required this.id_user,
@@ -18,8 +18,10 @@ class Ticket {
     required this.date,
     required this.heure,
     required this.createAt,
+     this.image,
     this.info,
     this.preference,
+
   });
 
   Ticket.fromDocumentSnapShot({required DocumentSnapshot document}){
@@ -31,6 +33,7 @@ class Ticket {
     preference = document['preference'];
     transactionId = document['transactionId'];
     nombre_de_place = document['nombre_de_place'];
+    image = document['image'];
   }
 
   topMap(Ticket ticket) {
@@ -42,7 +45,8 @@ class Ticket {
     "date":ticket.date,
     "info":ticket.info,
       "transactionId":ticket.transactionId,
-    "nombre_de_place":ticket.heure
+    "nombre_de_place":ticket.heure,
+      "image":ticket.image
   };
   }
 }

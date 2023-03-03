@@ -1,4 +1,5 @@
 import 'package:bestvoyage/models/ticket.dart';
+import 'package:bestvoyage/screens/others/lignes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kkiapay_flutter_sdk/kkiapay/view/widget_builder_view.dart';
@@ -54,7 +55,7 @@ class _ReserverAppState extends State<ReserverApp> {
    final now = DateTime.now();
     Ticket ticket = Ticket(id_user: prefs.getString(Constants.USER_UID),transactionId:response['transactionId'] , depart: widget.depart, arrivee: widget.arrivee, firstname: prefs.getString(Constants.FIRST_NAME), lastname: prefs.getString(Constants.LAST_NAME), nombre_de_place: nombre_place, date: "${dateTime!.year}-${dateTime!.month}-${dateTime!.day}", heure: time, createAt: now.toString());
     Navigator.pop(context);
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
           builder: (context) => SuccessScreen(
@@ -86,7 +87,7 @@ class _ReserverAppState extends State<ReserverApp> {
       appBar: AppBar(
         backgroundColor: AppColors.appBarBacmkground,
         leading: IconButton(onPressed: (){
-
+          Get.to(()=>LignePage());
         },icon: const Icon(Icons.arrow_back,color: Colors.white,),),
         title: SmallText(text: "Reserver un billet ",color: Colors.white,size: Dimensions.fontText15,),
         actions: [

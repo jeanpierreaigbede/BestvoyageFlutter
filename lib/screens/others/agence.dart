@@ -1,10 +1,15 @@
+import 'package:bestvoyage/controllers/agenceController.dart';
+import 'package:bestvoyage/screens/others/lignes.dart';
 import 'package:bestvoyage/utils/asset_image_name.dart';
 import 'package:bestvoyage/utils/dimensions.dart';
 import 'package:bestvoyage/widget/bigText.dart';
-import 'package:bestvoyage/widget/smallText.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/app_colors.dart';
+
+import 'package:get/get.dart';
+
 class AgencePage extends StatefulWidget {
   const AgencePage({Key? key}) : super(key: key);
 
@@ -14,6 +19,8 @@ class AgencePage extends StatefulWidget {
 
 class _AgencePageState extends State<AgencePage> {
   TextEditingController searchController = TextEditingController();
+
+  AgenceController agenceController = Get.put(AgenceController());
   @override
   void initState() {
     // TODO: implement initState
@@ -29,13 +36,13 @@ class _AgencePageState extends State<AgencePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.appBarBacmkground,
+        automaticallyImplyLeading: false,
         title: BigText(text: "Agences de voyages",color: Colors.white,size: Dimensions.fontText15,),
         leading: IconButton(
-          onPressed: (){},
+          onPressed: (){
+            Get.to(()=>LignePage());
+          },
           icon: const Icon(Icons.arrow_back,color: Colors.white,),),
-        actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.menu,color: Colors.white,))
-        ],
       ),
       body: Container(
             padding: EdgeInsets.only(top: Dimensions.height10),
@@ -79,64 +86,65 @@ class _AgencePageState extends State<AgencePage> {
             ),
           ),
           Expanded(
-              child: Container(
+              child: Obx(()=>Container(
                 margin: EdgeInsets.symmetric(horizontal: Dimensions.widtht10),
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10),
-                child: ListView.builder(
-                  itemCount: 10,
+                child: agenceController.agences ==0?Center(child: CircularProgressIndicator(color: Colors.purple,),) : ListView.builder(
+                    itemCount: agenceController.agences.length,
                     itemBuilder: (context,index){
-                    return Stack(
-                      children: [
-                        Container(
-                          height: Dimensions.height100*1.7,
-                          width: double.maxFinite,
-                          margin: EdgeInsets.symmetric(vertical: Dimensions.widtht10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
-                              image: DecorationImage(
-                                  image: AssetImage(ImagesName.station),
-                                fit: BoxFit.cover
-                              )
-                          ),),
+                      return Stack(
+                        children: [
+                          Container(
+                            height: Dimensions.height100*1.7,
+                            width: double.maxFinite,
+                            margin: EdgeInsets.symmetric(vertical: Dimensions.widtht10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
+                                image: DecorationImage(
+                                    image: AssetImage(ImagesName.station),
+                                    fit: BoxFit.cover
+                                )
+                            ),),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10*0.5),
                             margin: EdgeInsets.only(top: Dimensions.height45*1.5,left: Dimensions.widtht10,right: Dimensions.widtht10),
-                              height: Dimensions.height45*1.5,
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                color: Colors.black45,
-                                borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
-                              ),
-                               child: Column(
-                                 children: [
-                                    BigText(text: "Cotonou",color: Colors.white,),
-                                   Row(
-                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                     children: [
-                                       Row(
-                                         children: [
-                                          Icon(Icons.place,color: Colors.white,),
-                                           BigText(text: "Cadjehoun-voie40",color: Colors.white,size: Dimensions.fontText15*0.6,)
-                                         ],
-                                       ),
-                                       Row(
-                                         children: [
-                                           const Icon(Icons.phone,color: Colors.white,),
-                                           BigText(text: "Cadjehoun-voie40",color: Colors.white,size: Dimensions.fontText15*0.6,)
-                                         ],
-                                       )
-                                     ],
-                                   )
-                                 ],
-                               ),
+                            height: Dimensions.height45*1.5,
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
+                            ),
+                            child: Column(
+                              children: [
+                                BigText(text: agenceController.agences[index].ville!,color: Colors.white,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.place,color: Colors.white,),
+                                        BigText(text: agenceController.agences[index].address!,color: Colors.white,size: Dimensions.fontText15*0.6,)
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.phone,color: Colors.white,),
+                                        BigText(text: agenceController.agences[index].contact!,color: Colors.white,size: Dimensions.fontText15*0.6,)
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
 
-                        
-                      ],
-                    );
+
+                        ],
+                      );
                     }
                 ),
+              )
               )
           )
         ],
