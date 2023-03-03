@@ -1,5 +1,6 @@
 import 'package:bestvoyage/screens/auth/login_page.dart';
 import 'package:bestvoyage/screens/auth/register_page.dart';
+import 'package:bestvoyage/screens/others/lignes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,8 @@ class AuthController extends GetxController{
 
   // Inscription d'un utilisateur
 
-  Future<User?> register(String lastName,
+  Future<User?> register(
+      String lastName,
       String firstName,
       String email,
       String password,
@@ -47,7 +49,10 @@ class AuthController extends GetxController{
                 prefs.setString(Constants.USER_UID, userCredential.user!.uid);
                 prefs.setString(Constants.FIRST_NAME, firstName);
                 prefs.setString(Constants.LAST_NAME, lastName);
+                prefs.setString(Constants.EMAIL, member.email!);
+                Get.offAll(()=>LignePage(),transition: Transition.leftToRight);
               });
+
             } on Exception catch (e) {
               Get.snackbar("Ereur", e.toString());
             }
@@ -108,7 +113,8 @@ class AuthController extends GetxController{
             prefs.setString(Constants.USER_UID, userCredential.user!.uid);
             prefs.setString(Constants.FIRST_NAME, member.firstName!);
             prefs.setString(Constants.LAST_NAME, member.lastName!);
-
+            prefs.setString(Constants.EMAIL, member.email!);
+            Get.offAll(()=>LignePage(),transition: Transition.zoom);
           });
         }
       });

@@ -1,3 +1,4 @@
+import 'package:bestvoyage/controllers/authController.dart';
 import 'package:bestvoyage/screens/auth/register_page.dart';
 import 'package:bestvoyage/utils/app_colors.dart';
 import 'package:bestvoyage/utils/asset_image_name.dart';
@@ -17,8 +18,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  AuthController authController = Get.put(AuthController());
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
   bool isObscure = true;
   final formKey = GlobalKey<FormState>();
   @override
@@ -117,6 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                       border: InputBorder.none
                                     ),
+                                    validator: (value) {
+                                      return value == null || value == "" ? "Ce champs est obligatoire" : null;
+                                    },
                                   ),
                                 ),
 
@@ -158,11 +164,26 @@ class _LoginPageState extends State<LoginPage> {
                                           ),
                                           border: InputBorder.none
                                       ),
+                                      validator: (value) {
+                                        return value == null || value == "" ? "Ce champs est obligatoire" : null;
+                                      },
                                     ),
                                   ),
                                   SizedBox(height: Dimensions.height20,),
                                   // connexionButton
-                                  AppButton(child: BigText(text: "Connectez-vous",)),
+                                  InkWell(
+                                      onTap: (){
+                                        if(formKey.currentState!.validate()){
+                                          setState(() {
+                                            isLoading = true;
+                                          });
+                                          authController.signInWithEmailAndPassword(emailController.text, passwordController.text);
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                        }
+                                      },
+                                      child: AppButton(child: isLoading?const Center(child: CircularProgressIndicator(),):BigText(text: "Connectez-vous",))),
                                   SizedBox(height: Dimensions.height10,),
                                   TextButton(onPressed: (){
                                     Get.to(()=>RegisterPage(),transition: Transition.rightToLeft);

@@ -29,6 +29,7 @@ class _ReserverTicketState extends State<ReserverTicket> {
   List<String> arrivals = ['cotonou',"Bohicon","Grand popo"];
   List<String> herureDepart = ['07h00',"12h30","17h30"];
   List<String> preferences = ['cotonou',"Bohicon","Grand popo"];
+
   _showDatePicker(){
     showDatePicker(
         context: context,

@@ -3,7 +3,7 @@ class Constants{
   // For fireBase
   static const USERS = "Users";
   static const AGENCES = "Agences";
-  static const LIGNED  = "Lignes";
+  static const LIGNE  = "Lignes";
 
   // For SharedPreferences
 
@@ -11,4 +11,5 @@ class Constants{
   static const LAST_NAME = "lastName";
   static const FIRST_NAME = "firstName";
   static const USER_UID = "uid";
+  static const EMAIL = "email";
 }

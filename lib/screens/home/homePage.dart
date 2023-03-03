@@ -1,10 +1,14 @@
 import 'package:bestvoyage/screens/auth/login_page.dart';
+import 'package:bestvoyage/screens/others/lignes.dart';
 import 'package:bestvoyage/utils/asset_image_name.dart';
+import 'package:bestvoyage/utils/constanst.dart';
 import 'package:bestvoyage/utils/dimensions.dart';
 import 'package:bestvoyage/widget/bigText.dart';
 import 'package:bestvoyage/widget/smallText.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -12,8 +16,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: InkWell(
-        onTap: (){
-          Get.offAll(()=>LoginPage(),transition: Transition.leftToRight);
+        onTap: ()async{
+          final prefs = await SharedPreferences.getInstance();
+          Get.offAll(()=>prefs.getBool(Constants.IS_CONNECTED)!?LignePage():LoginPage(),transition: Transition.leftToRight);
         },
         child: Container(
           height: Dimensions.screenHeight,

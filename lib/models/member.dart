@@ -19,9 +19,9 @@ class Member{
   Member.fromDocumentSnapschot({required DocumentSnapshot document}){
 
     uid = document['uid'];
-    lastName = document['last_name'];
+    lastName = document['lastName'];
     email = document['email'];
-    firstName = document['first_name'];
+    firstName = document['firstName'];
     telephone = document["telephone"];
     type = document['type'];
   }

@@ -38,6 +38,7 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   shared_preferences:
+  kkiapay_flutter_sdk:
 
 
   # The following adds the Cupertino Icons font to your application.
