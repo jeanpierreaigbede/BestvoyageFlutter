@@ -1,6 +1,7 @@
 import 'package:bestvoyage/screens/auth/login_page.dart';
 import 'package:bestvoyage/screens/home/homePage.dart';
 import 'package:bestvoyage/screens/others/agence.dart';
+import 'package:bestvoyage/screens/others/tickets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bestvoyage/controllers/ligneController.dart';
 import 'package:bestvoyage/screens/home/treserverApp.dart';
@@ -251,7 +252,7 @@ class _LignePageState extends State<LignePage> {
                 }, child: SmallText(text: "Nos Lignes",isCenter: false,)),
               Divider(height: 20,color: Colors.black,),
               TextButton(onPressed: (){
-
+                Get.to(()=>TicketPage(),transition: Transition.leftToRight);
               }, child: SmallText(text: "Vos tickets",isCenter: false,)),
               Divider(height: 20,color: Colors.black,),
               TextButton(onPressed: (){

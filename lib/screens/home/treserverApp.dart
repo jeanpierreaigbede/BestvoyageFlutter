@@ -3,8 +3,9 @@ import 'package:bestvoyage/screens/others/lignes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kkiapay_flutter_sdk/kkiapay/view/widget_builder_view.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:intl/intl.dart';
 
 import '../../utils/app_colors.dart';
 import '../../utils/asset_image_name.dart';
@@ -53,7 +54,14 @@ class _ReserverAppState extends State<ReserverApp> {
     final prefs = await SharedPreferences.getInstance();
 
    final now = DateTime.now();
-    Ticket ticket = Ticket(id_user: prefs.getString(Constants.USER_UID),transactionId:response['transactionId'] , depart: widget.depart, arrivee: widget.arrivee, firstname: prefs.getString(Constants.FIRST_NAME), lastname: prefs.getString(Constants.LAST_NAME), nombre_de_place: nombre_place, date: "${dateTime!.year}-${dateTime!.month}-${dateTime!.day}", heure: time, createAt: now.toString());
+    Ticket ticket = Ticket(
+        id_user: prefs.getString(Constants.USER_UID),
+        transactionId:response['transactionId'] ,
+        depart: widget.depart, arrivee: widget.arrivee,
+        firstname: prefs.getString(Constants.FIRST_NAME),
+        lastname: prefs.getString(Constants.LAST_NAME),
+        nombre_de_place: nombre_place, date:DateFormat('yyyy-MM-dd').format(dateTime!),
+        heure: time, createAt: DateFormat('yyyy-MM-dd – kk:mm').format(now));
     Navigator.pop(context);
     Navigator.pushReplacement(
       context,
@@ -259,7 +267,7 @@ class _ReserverAppState extends State<ReserverApp> {
                                     alignment: Alignment.center,
                                     height: Dimensions.height100,
                                     width: double.maxFinite,
-                                    child: SmallText(text: "Veuillez la date et l'heure avant de continuer",isCenter: true,),
+                                    child: SmallText(text: "Veuillez renseigner la date et l'heure avant de continuer",isCenter: true,),
                                   ),
                                   child: Column(
                                     children: [
@@ -353,98 +361,110 @@ class _ReserverAppState extends State<ReserverApp> {
                                         onTap: ()async{
                                           if(formKey.currentState!.validate() && dateTime!= null){
 
-                                            showDialog(context: context,
-                                              builder: (BuildContext context){
-                                                return Dialog(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20))
-                                                  ),
-                                                  child: Container(
-                                                    height: MediaQuery.of(context).size.height*0.5,
-                                                    width: double.maxFinite,
-                                                    padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
-                                                        boxShadow: [
-                                                          BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(0,-1)),
-                                                          // BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(-1,-1))
-                                                        ]
+                                            List<String> dates = dateTime.toString().substring(0,10).split('-');
+                                            List<String> times = time!.split('h');
+
+                                            if(DateTime(int.parse(dates[0]),int.parse(dates[1]),int.parse(dates[2]),int.parse(times[0]),int.parse(times[1])).isBefore(DateTime.now())){
+                                              QuickAlert.show(
+                                                context: context,
+                                                type: QuickAlertType.info,
+                                                widget: SmallText(text: "Vous ne pouvez pas réserver un billet pour un temps passer! veuillez rédefinir la date ou l'heure de votre voyage",isCenter: true,),
+                                                confirmBtnColor: Colors.purpleAccent.withOpacity(0.7),
+                                                barrierDismissible: false
+                                              );
+                                            }else{
+                                              showDialog(context: context,
+                                                builder: (BuildContext context){
+                                                  return Dialog(
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20))
                                                     ),
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            SizedBox(width: Dimensions.widtht20,),
-                                                            BigText(text: "Paiement",size: Dimensions.fontText25,),
-                                                            IconButton(onPressed: (){
-                                                              Get.back();
-                                                            }, icon: Icon(Icons.close,size: 40,))
-                                                          ],
-                                                        ),
-                                                        SizedBox(height: Dimensions.height10,),
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Container(
-                                                              height: 50,
-                                                              width: 80,
-                                                              decoration:  BoxDecoration(
-                                                                image: DecorationImage(
-                                                                    image: AssetImage(ImagesName.mtnmomo),
-                                                                  fit: BoxFit.cover
-                                                                ),
+                                                    child: Container(
+                                                      height: MediaQuery.of(context).size.height*0.5,
+                                                      width: double.maxFinite,
+                                                      padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
+                                                          boxShadow: [
+                                                            BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(0,-1)),
+                                                            // BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(-1,-1))
+                                                          ]
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              SizedBox(width: Dimensions.widtht20,),
+                                                              BigText(text: "Paiement",size: Dimensions.fontText25,),
+                                                              IconButton(onPressed: (){
+                                                                Get.back();
+                                                              }, icon: Icon(Icons.close,size: 40,))
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: Dimensions.height10,),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Container(
+                                                                height: 50,
+                                                                width: 80,
+                                                                decoration:  BoxDecoration(
+                                                                  image: DecorationImage(
+                                                                      image: AssetImage(ImagesName.mtnmomo),
+                                                                      fit: BoxFit.cover
+                                                                  ),
 
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              height: 50,
-                                                              width: 80,
-                                                              decoration: BoxDecoration(
-                                                                image: DecorationImage(
-                                                                    image: AssetImage(ImagesName.visa),
-                                                                    fit: BoxFit.cover
                                                                 ),
                                                               ),
-                                                            ),
-                                                            Container(
-                                                              height: 50,
-                                                              width: 80,
-                                                              decoration: BoxDecoration(
-                                                                image: DecorationImage(
-                                                                    image: AssetImage(ImagesName.moovmomo),
-                                                                    fit: BoxFit.cover
+                                                              Container(
+                                                                height: 50,
+                                                                width: 80,
+                                                                decoration: BoxDecoration(
+                                                                  image: DecorationImage(
+                                                                      image: AssetImage(ImagesName.visa),
+                                                                      fit: BoxFit.cover
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        SizedBox(height: Dimensions.height10,),
-                                                      Text( "Faites vos paiements en toute sécurité ",
-                                                        textAlign: TextAlign.center,
-                                                        style: GoogleFonts.inter(
-                                                          fontSize: Dimensions.fontText15*0.8,
-                                                          fontWeight: FontWeight.w600
-                                                        ),
-                                                        ),
+                                                              Container(
+                                                                height: 50,
+                                                                width: 80,
+                                                                decoration: BoxDecoration(
+                                                                  image: DecorationImage(
+                                                                      image: AssetImage(ImagesName.moovmomo),
+                                                                      fit: BoxFit.cover
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: Dimensions.height10,),
+                                                          Text( "Faites vos paiements en toute sécurité ",
+                                                            textAlign: TextAlign.center,
+                                                            style: GoogleFonts.inter(
+                                                                fontSize: Dimensions.fontText15*0.8,
+                                                                fontWeight: FontWeight.w600
+                                                            ),
+                                                          ),
 
-                                                        Container(
-                                                            height: Dimensions.height100*1.8,
-                                                            width: Dimensions.screenwidth*0.8,
-                                                            decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
-                                                                boxShadow: [
-                                                                  BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.2),offset: Offset(0,-1)),
-                                                                  // BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(-1,-1))
-                                                                ]
-                                                            ),
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: Column(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                children: [
-                                                                  /*Row(
+                                                          Container(
+                                                              height: Dimensions.height100*1.8,
+                                                              width: Dimensions.screenwidth*0.8,
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
+                                                                  boxShadow: [
+                                                                    BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.2),offset: Offset(0,-1)),
+                                                                    // BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(-1,-1))
+                                                                  ]
+                                                              ),
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child: Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                  children: [
+                                                                    /*Row(
                                                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                     children: [
                                                                       SmallText(text: "Nom: "),
@@ -458,25 +478,25 @@ class _ReserverAppState extends State<ReserverApp> {
                                                                       SmallText(text: "$firstname")
                                                                     ],
                                                                   ),*/
-                                                                  Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                    children: [
-                                                                      SmallText(text: "nbre de ticket: "),
-                                                                      SmallText(text: "$nombre_place  ")
-                                                                    ],
-                                                                  ),
-                                                                  Divider(height: 7,color: Colors.black54,),
-                                                                  Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                    children: [
-                                                                      BigText(text: "total: "),
-                                                                      SmallText(text: "${nombre_place*widget.prix}")
-                                                                    ],
-                                                                  ),
-                                                                  Divider(height:  7,color: Colors.black54,),
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        SmallText(text: "nbre de ticket: "),
+                                                                        SmallText(text: "$nombre_place  ")
+                                                                      ],
+                                                                    ),
+                                                                    Divider(height: 7,color: Colors.black54,),
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        BigText(text: "total: "),
+                                                                        SmallText(text: "${nombre_place*widget.prix}")
+                                                                      ],
+                                                                    ),
+                                                                    Divider(height:  7,color: Colors.black54,),
 
-                                                                  //SmallText(text: "Paiement possible par mobile money et carte banquaire"),
-                                                                 /* Row(
+                                                                    //SmallText(text: "Paiement possible par mobile money et carte banquaire"),
+                                                                    /* Row(
                                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
                                                                       Container(
@@ -514,60 +534,62 @@ class _ReserverAppState extends State<ReserverApp> {
                                                                       )
                                                                     ],
                                                                   )*/
-                                                                ],
+                                                                  ],
+                                                                ),
+                                                              )
+                                                          ),
+
+                                                          InkWell(
+                                                            onTap: ()async{
+
+                                                              final prefs = await SharedPreferences.getInstance();
+                                                              final email = prefs.getString(Constants.EMAIL);
+                                                              final name = prefs.getString(Constants.FIRST_NAME)! + prefs.getString(Constants.LAST_NAME)!;
+                                                              final kkiapay = KKiaPay(
+                                                                  amount: 100,
+                                                                  countries: ["BJ","TG","SN","CI"],
+                                                                  phone: "22961000000",
+                                                                  name: name,
+                                                                  email: email,
+                                                                  reason: 'Achat de ticket pour Best Voyage',
+                                                                  data: 'Fake data',
+                                                                  sandbox: true,
+                                                                  apikey: '197981809acd11ed84eb8bf4616359f3',
+                                                                  callback: successCallback,
+                                                                  theme: "#E5C2F8", // Ex : "#222F5A",
+                                                                  partnerId: 'AxXxXXxId',
+                                                                  paymentMethods:["momo","card"]
+                                                              );
+
+                                                              // ignore: use_build_context_synchronously
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                                return kkiapay;
+                                                              }));
+                                                            },
+                                                            child: Container(
+                                                              alignment: Alignment.center,
+                                                              height: Dimensions.height45,
+                                                              width: double.maxFinite,
+                                                              margin: EdgeInsets.symmetric(vertical: Dimensions.height10),
+                                                              decoration: BoxDecoration(
+                                                                  color: AppColors.buttonColor,
+                                                                  borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
+                                                                  boxShadow: [
+                                                                    BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.2),offset: Offset(0,-1)),
+                                                                    // BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(-1,-1))
+                                                                  ]
                                                               ),
-                                                            )
-                                                          ),
-
-                                                        InkWell(
-                                                          onTap: ()async{
-                                                            final prefs = await SharedPreferences.getInstance();
-                                                            final email = prefs.getString(Constants.EMAIL);
-                                                            final name = prefs.getString(Constants.FIRST_NAME)! + prefs.getString(Constants.LAST_NAME)!;
-                                                            final kkiapay = KKiaPay(
-                                                                amount: 100,
-                                                                countries: ["BJ","TG","SN","CI"],
-                                                                phone: "22961000000",
-                                                                name: name,
-                                                                email: email,
-                                                                reason: 'Achat de ticket pour Best Voyage',
-                                                                data: 'Fake data',
-                                                                sandbox: true,
-                                                                apikey: '197981809acd11ed84eb8bf4616359f3',
-                                                                callback: successCallback,
-                                                                theme: "#E5C2F8", // Ex : "#222F5A",
-                                                                partnerId: 'AxXxXXxId',
-                                                                paymentMethods:["momo","card"]
-                                                            );
-
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                              return kkiapay;
-                                                            }));
-                                                          },
-                                                          child: Container(
-                                                            alignment: Alignment.center,
-                                                            height: Dimensions.height45,
-                                                            width: double.maxFinite,
-                                                            margin: EdgeInsets.symmetric(vertical: Dimensions.height10),
-                                                            decoration: BoxDecoration(
-                                                                color: AppColors.buttonColor,
-                                                                borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
-                                                                boxShadow: [
-                                                                  BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.2),offset: Offset(0,-1)),
-                                                                  // BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(-1,-1))
-                                                                ]
+                                                              padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10),
+                                                              child: SmallText(text: "Passer au paiement",color: Colors.white,),
                                                             ),
-                                                            padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10),
-                                                            child: SmallText(text: "Passer au paiement",color: Colors.white,),
-                                                          ),
-                                                        )
-                                                      ],
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          }else if(dateTime == null){
+                                                  );
+                                                },
+                                              );
+                                            }
 
                                           }
                                         },

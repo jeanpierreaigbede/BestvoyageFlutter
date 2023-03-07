@@ -17,7 +17,6 @@ import 'package:bestvoyage/widget/smallText.dart';
 import 'package:flutter/material.dart';
 import 'package:bestvoyage/models/ticket.dart';
 
-import '../../utils/asset_image_name.dart';
 import '../../utils/constanst.dart';
 
 
@@ -77,13 +76,23 @@ class _SuccessScreenState extends State<SuccessScreen> {
     }
   }
   void myFonction()async{
-    print('Ca fait 1');
+
     final myFile = await captureWidgetAsFile();
     if(myFile != null){
       var url = await uploadFile(myFile);
-
       if(url != null){
-        Ticket ticket = Ticket(id_user: widget.ticket.id_user, transactionId: widget.ticket.transactionId, depart: widget.ticket.depart, arrivee: widget.ticket.arrivee, firstname: widget.ticket.firstname, lastname: widget.ticket.lastname, nombre_de_place: widget.ticket.nombre_de_place, date: widget.ticket.date, heure: widget.ticket.heure, createAt: widget.ticket.createAt,image: url,);
+        Ticket ticket = Ticket(
+          id_user: widget.ticket.id_user,
+          transactionId: widget.ticket.transactionId,
+          depart: widget.ticket.depart,
+          arrivee: widget.ticket.arrivee,
+          firstname: widget.ticket.firstname,
+          lastname: widget.ticket.lastname,
+          nombre_de_place: widget.ticket.nombre_de_place,
+          date: widget.ticket.date,
+          heure: widget.ticket.heure,
+          createAt: widget.ticket.createAt,
+          image: url,);
 
         var mapTicket = ticket.topMap(ticket);
         FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -102,7 +111,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Ticket"),),
+      appBar: AppBar(title: const Text("Ticket"),),
       body:  Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(

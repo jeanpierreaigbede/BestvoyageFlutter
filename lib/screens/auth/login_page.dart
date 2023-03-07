@@ -1,5 +1,6 @@
 import 'package:bestvoyage/controllers/authController.dart';
 import 'package:bestvoyage/screens/auth/register_page.dart';
+import 'package:bestvoyage/screens/others/forgot_password.dart';
 import 'package:bestvoyage/utils/app_colors.dart';
 import 'package:bestvoyage/utils/asset_image_name.dart';
 import 'package:bestvoyage/utils/dimensions.dart';
@@ -204,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                                   }, child: SmallText(text: 'Avez-vous un compte? Créer un compte',isCenter: true,size: Dimensions.fontText15*0.8,),),
 
                                   TextButton(onPressed: (){
-
+                                  Get.to(()=>ForgotPasswordPage());
                                   }, child: BigText(text: "Mot de passe oublié?",color: Colors.purple,isCenter: true,size: Dimensions.fontText15*0.8,))
                                 ],
                               )

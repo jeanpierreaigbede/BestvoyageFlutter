@@ -102,7 +102,7 @@ class _AgencePageState extends State<AgencePage> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
                                 image: DecorationImage(
-                                    image: AssetImage(ImagesName.station),
+                                    image: NetworkImage(agenceController.agences[index].image!),
                                     fit: BoxFit.cover
                                 )
                             ),),

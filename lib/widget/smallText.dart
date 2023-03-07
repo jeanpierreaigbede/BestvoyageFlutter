@@ -6,14 +6,14 @@ class SmallText extends StatelessWidget {
   double size;
   bool isCenter;
   int maxLine;
-  SmallText({Key? key,required this.text, this.color = Colors.black,this.size = 18,this.isCenter = false,this.maxLine=1}) : super(key: key);
+  SmallText({Key? key,required this.text, this.color = Colors.black,this.size = 18,this.isCenter = false,this.maxLine=10}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Text(text,
       maxLines: maxLine,
       style: GoogleFonts.inter(
           fontSize: size,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           color: color,
       ),
     textAlign: isCenter ?TextAlign.center:TextAlign.left,);

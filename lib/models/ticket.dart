@@ -45,8 +45,10 @@ class Ticket {
     "date":ticket.date,
     "info":ticket.info,
       "transactionId":ticket.transactionId,
-    "nombre_de_place":ticket.heure,
-      "image":ticket.image
+    "nombre_de_place":ticket.nombre_de_place,
+      "heure":ticket.heure,
+      "image":ticket.image,
+      "createAt":ticket.createAt
   };
   }
 }
