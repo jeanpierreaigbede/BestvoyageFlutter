@@ -270,16 +270,19 @@ class _ReserverAppState extends State<ReserverApp> {
                                     child: SmallText(text: "Veuillez renseigner la date et l'heure avant de continuer",isCenter: true,),
                                   ),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
+                                      SizedBox(height: Dimensions.height5,),
                                       SmallText(text: "Nombre de place",size: Dimensions.fontText15*0.8,),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Container(
                                             alignment: Alignment.center,
                                             height: Dimensions.height100*0.6,
                                             width: Dimensions.screenwidth/3,
-                                            padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10),
+                                            margin: EdgeInsets.symmetric(vertical: 10),
+                                            padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10,vertical: 10),
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.all(Radius.circular(Dimensions.widtht20)),
                                                 boxShadow: [
@@ -305,7 +308,7 @@ class _ReserverAppState extends State<ReserverApp> {
                                               ],
                                             ),
                                           ),
-                                          Container(
+                                          /*Container(
                                             height: Dimensions.height100*0.6,
                                             width: Dimensions.screenwidth/2,
                                             padding: EdgeInsets.symmetric(horizontal: Dimensions.widtht10),
@@ -316,14 +319,14 @@ class _ReserverAppState extends State<ReserverApp> {
                                                   // BoxShadow(blurRadius: 2.3,color: AppColors.buttonColor.withOpacity(0.1),offset: Offset(-1,-1))
                                                 ]
                                             ),
-                                            child: Row(
+                                           /* child: Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 SmallText(text: "Disponible:"),
                                                 BigText(text: "20"),
                                               ],
-                                            ),
-                                          )
+                                            ),*/
+                                          )*/
                                         ],
                                       ),
 
@@ -546,7 +549,7 @@ class _ReserverAppState extends State<ReserverApp> {
                                                               final email = prefs.getString(Constants.EMAIL);
                                                               final name = prefs.getString(Constants.FIRST_NAME)! + prefs.getString(Constants.LAST_NAME)!;
                                                               final kkiapay = KKiaPay(
-                                                                  amount: 100,
+                                                                  amount: widget.prix*nombre_place,
                                                                   countries: ["BJ","TG","SN","CI"],
                                                                   phone: "22961000000",
                                                                   name: name,
@@ -556,7 +559,7 @@ class _ReserverAppState extends State<ReserverApp> {
                                                                   sandbox: true,
                                                                   apikey: '197981809acd11ed84eb8bf4616359f3',
                                                                   callback: successCallback,
-                                                                  theme: "#E5C2F8", // Ex : "#222F5A",
+                                                                  theme: "#f5C2F8", // Ex : "#222F5A",
                                                                   partnerId: 'AxXxXXxId',
                                                                   paymentMethods:["momo","card"]
                                                               );

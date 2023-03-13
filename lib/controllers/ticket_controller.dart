@@ -27,6 +27,7 @@ class TicketController extends GetxController{
           List<Ticket> ticketsDosc = [];
           for(var tic in snapshot.docs){
             Ticket tick = Ticket.fromDocumentSnapShot(document: tic);
+            print(tick);
             ticketsDosc.add(tick);
           }
           return ticketsDosc;

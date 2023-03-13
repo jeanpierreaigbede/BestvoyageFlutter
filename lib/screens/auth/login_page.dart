@@ -197,8 +197,6 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
-
-
                                   SizedBox(height: Dimensions.height10,),
                                   TextButton(onPressed: (){
                                     Get.to(()=>RegisterPage(),transition: Transition.rightToLeft);

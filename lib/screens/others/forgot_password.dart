@@ -6,6 +6,7 @@ import '../../controllers/authController.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/dimensions.dart';
 import '../../widget/bigText.dart';
+import '../../widget/smallText.dart';
 
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -67,7 +68,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       //Get.snackbar("Mot de passe oublié", "Un lien de réinitialisation de mot de passe a été envoyé à votre adresse email");
                       Get.defaultDialog(
                           title: "Réinitilisation",
-                          content: BigText(text: "Un lien de réinitialisation de mot de passe a été envoyé à votre adresse email"),
+                          content: SmallText(text: "Un lien de réinitialisation de mot de passe a été envoyé à votre adresse email"),
                           confirm: InkWell(
                             onTap: (){
                               Get.offAll(()=>LoginPage());
